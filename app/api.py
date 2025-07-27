@@ -8,10 +8,6 @@ from openai import OpenAI
 import base64
 from io import BytesIO
 import requests
-from dotenv import load_dotenv
-
-load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 router = APIRouter()
 
@@ -40,7 +36,7 @@ async def upload_sketch(file: UploadFile = File(...)):
     return {"filename": filename, "ai_guess": guess}
 
 
-def ask_local_model(image: Image.Image, prompt: str = "What is this sketch?") -> str:
+def ask_local_model(image: Image.Image, prompt: str = "What do you see in this sketch?") -> str:
     # Convert image to base64
     buffer = BytesIO()
     image.save(buffer, format="PNG")
