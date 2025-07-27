@@ -55,8 +55,8 @@ Then visit: http://localhost:8000/ui/
 
 ---
 ## How It Works
-1.You draw a sketch in your browser
-2.The drawing is sent to the /upload-sketch API as a PNG
-3.The backend encodes the image and sends it to a local Ollama model
-4.The model returns its best guess
+1.You draw a sketch in your browser \n
+2.The drawing is sent to the /upload-sketch API as a PNG \n
+3.The backend encodes the image and sends it to a local Ollama model \n
+4.The model returns its best guess \n
 5.The frontend displays the result 
