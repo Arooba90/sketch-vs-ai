@@ -30,19 +30,26 @@
 ## 📦 Local Setup
 
 ### 1. Clone the repo
-```bash
+<pre>
 git clone https://github.com/Arooba90/sketch-vs-ai.git
 cd sketch-vs-ai
+</pre>
 
 ### 2. Install dependencies
+<pre>
 poetry install
+</pre>
 
 ### 3. Start Ollama (with LLaVA or BakLLaVA)
+<pre>
 ollama pull llava
 ollama run llava
+</pre>
 
 ### 4. Run the app
+<pre>
 uvicorn app.main:app --reload
+</pre>
 
 Then visit: http://localhost:8000/ui/
 
