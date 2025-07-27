@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sketch vs AI</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f0f0f0;
+    }
+
+    #container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    canvas {
+      border: 2px solid black;
+      border-radius: 4px;
+      touch-action: none;
+    }
+
+    button {
+      margin: 5px;
+      padding: 8px 16px;
+      border: none;
+      background-color: #2d87f0;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    button:hover {
+      background-color: #1c66c4;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-size: 1.2em;
+    }
+
+    #loader {
+      display: none;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h2>🎨 Draw something and let AI guess!</h2>
+    <canvas id="sketch" width="300" height="300"></canvas><br/>
+    <button onclick="clearCanvas()">Clear</button>
+    <button onclick="submitSketch()">Submit</button>
+    <div id="loader">🤖 Thinking...</div>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("sketch");
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 4;
+
+    let drawing = false;
+
+    canvas.addEventListener("mousedown", () => drawing = true);
+    canvas.addEventListener("mouseup", () => {
+      drawing = false;
+      ctx.beginPath();
+    });
+    canvas.addEventListener("mousemove", draw);
+
+    function draw(e) {
+      if (!drawing) return;
+      const rect = canvas.getBoundingClientRect();
+      ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    }
+
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      document.getElementById("result").textContent = "";
+      document.getElementById("loader").style.display = "none";
+    }
+
+    async function submitSketch() {
+      document.getElementById("loader").style.display = "block";
+      document.getElementById("result").textContent = "";
+
+      canvas.toBlob(async function(blob) {
+        const formData = new FormData();
+        formData.append("file", blob, "sketch.png");
+
+        const response = await fetch("/upload-sketch", {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await response.json();
+
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("result").textContent = "🧠 AI Guess: " + data.ai_guess;
+      }, "image/png");
+    }
+  </script>
+</body>
+</html>
