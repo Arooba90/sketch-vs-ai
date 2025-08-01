@@ -3,7 +3,7 @@ name = "sketch-vs-ai"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "Simplifying-Document-Processing-with-UiPath-and-ChatGPT",email = "orooba80@gmail.com"}
+    {name = "Arooba Al Siyabi",email = "orooba80@gmail.com"}
 ]
 readme = "README.md"
 requires-python = "^3.10"
